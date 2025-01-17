@@ -1,4 +1,4 @@
-package com.arshia.lightdocumentreader.ui.theme
+package com.arshia.lightdocumentreader.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -58,7 +58,7 @@ android {
 }
 
 dependencies {
-// default
+    // default
     //
     // compose
     implementation(platform(libs.androidx.compose.bom))
