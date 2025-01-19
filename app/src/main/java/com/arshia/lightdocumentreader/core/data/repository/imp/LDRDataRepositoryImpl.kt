@@ -1,5 +1,6 @@
-package com.arshia.lightdocumentreader.core.data.repository
+package com.arshia.lightdocumentreader.core.data.repository.imp
 
+import com.arshia.lightdocumentreader.core.data.repository.LDRDataRepository
 import com.arshia.lightdocumentreader.core.datastore.LDRDataStore
 import com.arshia.lightdocumentreader.core.designsystem.theme.AppTheme
 import com.arshia.lightdocumentreader.core.model.LDRData
