@@ -4,8 +4,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
 import com.arshia.lightdocumentreader.core.datastore.LDRDataStore
+import com.arshia.lightdocumentreader.core.datastore.LDRDataStoreModel
 import com.arshia.lightdocumentreader.core.datastore.LDRDataStoreModelSerializer
-import com.arshia.lightdocumentreader.core.model.LDRData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,10 +15,10 @@ import org.koin.dsl.module
 
 val dataStoreModule = module {
 
-    single<DataStore<LDRData>> {
+    single<DataStore<LDRDataStoreModel>> {
         DataStoreFactory.create(
             serializer = LDRDataStoreModelSerializer(),
-            produceFile = { androidContext().dataStoreFile("demo.pb") },
+            produceFile = { androidContext().dataStoreFile("ldr.pb") },
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         )
     }

@@ -15,6 +15,7 @@ kotlin-serialization = "2.0.21"
 serialization-json = "1.7.3"
 koin = "4.0.0"
 coreSplashscreen = "1.0.1"
+room = "2.6.1"
 
 [libraries]
 ## android
@@ -46,6 +47,11 @@ koin-androidx-compose-navigation = { module = "io.insert-koin:koin-androidx-comp
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 ## datastore
 androidx-datastore-datastore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
+## room
+room = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.debugImplementation
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -94,4 +92,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     // protoDataStore
     implementation(libs.androidx.datastore.datastore)
+    // room
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 }
