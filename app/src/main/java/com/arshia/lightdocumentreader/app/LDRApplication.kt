@@ -6,6 +6,7 @@ import com.arshia.lightdocumentreader.core.contentprovider.di.contentProviderMod
 import com.arshia.lightdocumentreader.core.data.di.dataModule
 import com.arshia.lightdocumentreader.core.database.di.databaseModule
 import com.arshia.lightdocumentreader.core.datastore.di.dataStoreModule
+import com.arshia.lightdocumentreader.feature.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -24,6 +25,7 @@ class LDRApplication : Application() {
                 dataModule,
                 contentProviderModule,
                 databaseModule,
+                viewModelModule,
             )
         }
     }

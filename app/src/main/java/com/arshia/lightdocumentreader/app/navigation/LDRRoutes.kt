@@ -2,15 +2,16 @@ package com.arshia.lightdocumentreader.app.navigation
 
 import kotlinx.serialization.Serializable
 
-sealed interface LDRRoutes {
+@Serializable
+sealed class LDRRoutes {
 
     @Serializable
-    object MainRoute
+    data object MainRoute
 
     @Serializable
-    object SettingsRoute
+    data object SettingsRoute
 
     @Serializable
-    object ViewerRoute
+    data object ViewerRoute
 
 }
