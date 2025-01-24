@@ -96,4 +96,6 @@ dependencies {
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+    // coil
+    implementation(libs.coil.compose)
 }

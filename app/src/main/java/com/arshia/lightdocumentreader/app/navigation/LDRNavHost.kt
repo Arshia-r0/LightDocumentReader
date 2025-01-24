@@ -1,6 +1,8 @@
 package com.arshia.lightdocumentreader.app.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -12,11 +14,17 @@ import com.arshia.lightdocumentreader.feature.main.navigation.mainScreenNavigati
 fun LDRNavHost(
     navController: NavHostController = rememberNavController(),
 ) {
-    NavHost(
-        startDestination = LDRRoutes.MainRoute,
-        navController = navController,
+    Scaffold(
         modifier = Modifier.fillMaxSize(),
-    ) {
-        mainScreenNavigation()
+    ) { ip ->
+        NavHost(
+            startDestination = LDRRoutes.MainRoute,
+            navController = navController,
+            modifier = Modifier
+                .padding(ip)
+                .fillMaxSize(),
+        ) {
+            mainScreenNavigation()
+        }
     }
 }

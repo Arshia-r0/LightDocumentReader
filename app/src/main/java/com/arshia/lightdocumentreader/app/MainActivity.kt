@@ -14,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.arshia.lightdocumentreader.app.navigation.LDRNavHost
 import com.arshia.lightdocumentreader.core.data.repository.PermissionManager
 import com.arshia.lightdocumentreader.core.designsystem.theme.LightDocumentReaderTheme
-import com.arshia.lightdocumentreader.core.model.LDRPermission
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.compose.KoinAndroidContext
@@ -53,8 +52,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (permissionManager.checkPermission(LDRPermission.ReadExternalStorage)) {
-            // todo check permission 
-        }
+//        if (permissionManager.checkPermission(LDRPermission.ReadExternalStorage)) {
+//            // todo check permission 
+//        }
     }
 }
