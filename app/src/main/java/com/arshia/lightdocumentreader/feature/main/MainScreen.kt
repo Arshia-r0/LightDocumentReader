@@ -25,10 +25,10 @@ fun MainScreen(
     viewModel: MainScreenViewModel = koinViewModel()
 ) {
     val documents by viewModel.documents.collectAsStateWithLifecycle()
-    var requestPermission by viewModel.requestPermission
+    var showPermissionRequest by viewModel.showPermissionDialog
     val requestLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
-        onResult = { requestPermission = false }
+        onResult = { showPermissionRequest = false }
     )
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -46,12 +46,13 @@ fun MainScreen(
                 }
             }
         }
-        if (requestPermission) {
+        if (showPermissionRequest) {
             RequestDialog(
                 onConfirm = {
-                    requestLauncher.launch(viewModel.readExternalStoragePermission.value)
+//                    requestLauncher.launch(viewModel.readExternalStoragePermission.value)
+                    viewModel.requestPermission()
                 },
-                onDismiss = { requestPermission = false },
+                onDismiss = { showPermissionRequest = false },
                 text = "Access to External storage is needed to view device documents.",
                 buttonText = "accept",
             )
@@ -67,33 +68,30 @@ private fun RequestDialog(
     text: String,
     buttonText: String
 ) {
-    Scaffold { ip ->
-        AlertDialog(
-            modifier = Modifier
-                .padding(ip),
-            onDismissRequest = onDismiss,
-            confirmButton = {
-                Button(onClick = onConfirm) {
-                    Text(buttonText)
-                }
-            },
-            title = {
-                Text(
-                    text = "Request permission",
-                    fontSize = 20.sp
-                )
-            },
-            text = {
-                Text(
-                    text = text,
-                    fontSize = 15.sp
-                )
-            },
-            dismissButton = {
-                Button(onClick = { onDismiss() }) {
-                    Text("Dismiss")
-                }
+    AlertDialog(
+        modifier = Modifier,
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(onClick = onConfirm) {
+                Text(buttonText)
             }
-        )
-    }
+        },
+        title = {
+            Text(
+                text = "Request permission",
+                fontSize = 20.sp
+            )
+        },
+        text = {
+            Text(
+                text = text,
+                fontSize = 15.sp
+            )
+        },
+        dismissButton = {
+            Button(onClick = { onDismiss() }) {
+                Text("Dismiss")
+            }
+        }
+    )
 }

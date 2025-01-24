@@ -4,19 +4,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.lightdocumentreader.core.data.repository.DocumentRepository
-import com.arshia.lightdocumentreader.core.data.repository.PermissionChecker
-import com.arshia.lightdocumentreader.core.model.LDRPermissions
+import com.arshia.lightdocumentreader.core.model.LDRPermission
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
     private val documentRepository: DocumentRepository,
-    private val permissionChecker: PermissionChecker,
+    private val permissionManager: com.arshia.lightdocumentreader.core.data.repository.PermissionManager
 ) : ViewModel() {
 
-    val readExternalStoragePermission = LDRPermissions.ReadExternalStorage
-    val requestPermission = mutableStateOf(false)
+    val readExternalStoragePermission = LDRPermission.ReadExternalStorage
+    val showPermissionDialog = mutableStateOf(false)
 
     val documents = documentRepository.documents
         .stateIn(
@@ -30,15 +29,20 @@ class MainScreenViewModel(
     }
    
     private fun checkPermission(): Boolean =
-        permissionChecker.checkPermission(readExternalStoragePermission.value)
+        permissionManager.checkPermission(readExternalStoragePermission)
 
     fun refresh() {
         if (!checkPermission()) {
-            requestPermission.value = true
+            showPermissionDialog.value = true
+        } else {
+            viewModelScope.launch {
+                documentRepository.refresh().collect {}
+            }
         }
-        viewModelScope.launch {
-            documentRepository.refresh()
-        }
+    }
+
+    fun requestPermission() {
+        permissionManager.requestPermission(readExternalStoragePermission)
     }
 
 }

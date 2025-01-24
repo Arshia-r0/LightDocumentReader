@@ -20,6 +20,7 @@ class DocumentRepositoryImpl(
         try {
             emit(Resource.Loading)
             val documents = documentProvider.getAll()
+            println(documents)
             dao.upsert(*documents.toTypedArray())
             emit(Resource.Success())
         } catch (e: Exception) {
