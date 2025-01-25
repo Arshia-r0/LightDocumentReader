@@ -1,4 +1,4 @@
-package com.arshia.lightdocumentreader.feature.main
+package com.arshia.lightdocumentreader.feature.viewer.components
 
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth

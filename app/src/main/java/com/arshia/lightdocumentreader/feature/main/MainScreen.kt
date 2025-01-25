@@ -1,13 +1,10 @@
 package com.arshia.lightdocumentreader.feature.main
 
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -22,46 +19,29 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(
-    viewModel: MainScreenViewModel = koinViewModel()
+    toViewerScreen: (Uri) -> Unit,
+    viewModel: MainScreenViewModel = koinViewModel(),
 ) {
-    var pdfUri by viewModel.pdfUri
-    val renderedPages by viewModel.renderedPages
+    var pdfUriToOpen by viewModel.pdfUriToOpen
     val choosePdfLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) { pdfUri = it }
-    LaunchedEffect(pdfUri) {
-        viewModel.renderPdf()
+    ) { pdfUriToOpen = it }
+    LaunchedEffect(pdfUriToOpen) {
+        pdfUriToOpen?.let { toViewerScreen(it) }
     }
 //    var showPermissionRequest by viewModel.showPermissionDialog
 //    val requestLauncher = rememberLauncherForActivityResult(
 //        ActivityResultContracts.RequestPermission(),
 //        onResult = { showPermissionRequest = false }
 //    )
-    if (pdfUri == null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Button(
+            onClick = { choosePdfLauncher.launch("application/pdf") }
         ) {
-            Button(
-                onClick = { choosePdfLauncher.launch("application/pdf") }
-            ) {
-                Text("choose pdf")
-            }
-        }
-    } else {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-            ) {
-                items(renderedPages) { page ->
-                    PdfPage(page = page)
-                }
-            }
+            Text("choose pdf")
         }
     }
 }
