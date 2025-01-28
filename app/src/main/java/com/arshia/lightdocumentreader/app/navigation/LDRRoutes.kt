@@ -1,7 +1,7 @@
 package com.arshia.lightdocumentreader.app.navigation
 
 import android.net.Uri
-import com.arshia.lightdocumentreader.core.model.serializer.UriSerializer
+import androidx.core.net.toUri
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,7 +13,10 @@ sealed class LDRRoutes {
     @Serializable
     data object SettingsRoute
 
-    @Serializable(with = UriSerializer::class)
-    data class ViewerRoute(val uri: Uri)
+    @Serializable
+    data class ViewerRoute(private var _uriString: String) {
+        val uri: Uri
+            get() = _uriString.toUri()
+    }
 
 }

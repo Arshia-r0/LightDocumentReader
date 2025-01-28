@@ -1,6 +1,7 @@
 package com.arshia.lightdocumentreader.feature.viewer
 
 import android.net.Uri
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,9 +24,8 @@ fun ViewerScreen(
 ) {
     val uiState by viewModel.uiState
     val renderedPages by viewModel.renderedPages
-    if (uiState is ViewerScreenUiState.Loading) {
-        CircularProgressIndicator()
-    } else {
+    if (uiState is ViewerScreenUiState.Loading) LoadingDocument()
+    else {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -40,5 +40,15 @@ fun ViewerScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun LoadingDocument() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
     }
 }

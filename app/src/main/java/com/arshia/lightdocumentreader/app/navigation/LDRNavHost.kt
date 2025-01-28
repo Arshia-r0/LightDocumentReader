@@ -26,7 +26,7 @@ fun LDRNavHost(
                 .fillMaxSize(),
         ) {
             mainScreenNavigation(
-                toViewerScreen = { uri -> navController.navigate(LDRRoutes.ViewerRoute(uri)) }
+                toViewerScreen = { uri -> navController.navigate(LDRRoutes.ViewerRoute(uri.toString())) }
             )
             viewerScreenNavigation(
                 navigateBack = { navController.navigateUp() }
