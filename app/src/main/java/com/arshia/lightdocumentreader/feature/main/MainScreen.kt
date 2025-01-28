@@ -9,9 +9,6 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
@@ -22,13 +19,9 @@ fun MainScreen(
     toViewerScreen: (Uri) -> Unit,
     viewModel: MainScreenViewModel = koinViewModel(),
 ) {
-    var pdfUriToOpen by viewModel.pdfUriToOpen
     val choosePdfLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) { pdfUriToOpen = it }
-    LaunchedEffect(pdfUriToOpen) {
-        pdfUriToOpen?.let { toViewerScreen(it) }
-    }
+    ) { it?.let { toViewerScreen(it) } }
 //    var showPermissionRequest by viewModel.showPermissionDialog
 //    val requestLauncher = rememberLauncherForActivityResult(
 //        ActivityResultContracts.RequestPermission(),

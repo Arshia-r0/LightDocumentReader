@@ -19,4 +19,7 @@ sealed class LDRRoutes {
             get() = _uriString.toUri()
     }
 
+    @Serializable
+    data object DeepLinkViewerRoute
+
 }

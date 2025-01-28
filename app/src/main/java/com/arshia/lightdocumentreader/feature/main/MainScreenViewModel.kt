@@ -1,15 +1,11 @@
 package com.arshia.lightdocumentreader.feature.main
 
-import android.net.Uri
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class MainScreenViewModel(
 //    private val documentRepository: DocumentRepository,
 //    private val permissionManager: PermissionManager,
 ) : ViewModel() {
-
-    val pdfUriToOpen = mutableStateOf<Uri?>(null)
 
 //    val documents = documentRepository.documents
 //        .stateIn(

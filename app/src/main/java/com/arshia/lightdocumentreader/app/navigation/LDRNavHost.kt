@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.arshia.lightdocumentreader.feature.main.navigation.mainScreenNavigation
+import com.arshia.lightdocumentreader.feature.viewer.navigation.deepLinkViewerScreenNavigation
 import com.arshia.lightdocumentreader.feature.viewer.navigation.viewerScreenNavigation
 
 @Composable
@@ -30,6 +31,11 @@ fun LDRNavHost(
             )
             viewerScreenNavigation(
                 navigateBack = { navController.navigateUp() }
+            )
+            deepLinkViewerScreenNavigation(
+                navigateBack = {
+                    navController.navigate(LDRRoutes.MainRoute)
+                }
             )
         }
     }

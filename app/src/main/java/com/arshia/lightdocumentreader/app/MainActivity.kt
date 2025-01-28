@@ -1,6 +1,7 @@
 package com.arshia.lightdocumentreader.app
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,8 @@ class MainActivity : ComponentActivity() {
                 viewModel.uiState.collect { uiState = it }
             }
         }
+       
+        Log.d("MainActivity", intent?.data.toString())
 
         splashScreen.setKeepOnScreenCondition {
             uiState == MainActivityUiState.Loading
