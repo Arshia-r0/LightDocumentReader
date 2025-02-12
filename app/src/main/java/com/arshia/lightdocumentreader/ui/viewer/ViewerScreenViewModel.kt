@@ -1,8 +1,10 @@
-package com.arshia.lightdocumentreader.feature.viewer
+package com.arshia.lightdocumentreader.ui.viewer
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arshia.lightdocumentreader.core.document.PDFBitmapConverter
@@ -13,8 +15,11 @@ class ViewerScreenViewModel(
     private val pdfBitmapConverter: PDFBitmapConverter,
 ) : ViewModel() {
 
-    val uiState = mutableStateOf<ViewerScreenUiState>(ViewerScreenUiState.Loading)
+    val loading = mutableStateOf(true)
     val renderedPages = mutableStateOf<List<Bitmap>>(emptyList())
+
+    val scale = mutableFloatStateOf(1f)
+    val offset = mutableStateOf(Offset.Zero)
 
     init {
         renderPdf()
@@ -23,13 +28,8 @@ class ViewerScreenViewModel(
     fun renderPdf() {
         viewModelScope.launch {
             renderedPages.value = pdfBitmapConverter.pdfToBitmaps(uri)
-            uiState.value = ViewerScreenUiState.Success
+            loading.value = false
         }
     }
 
-}
-
-sealed class ViewerScreenUiState {
-    data object Loading : ViewerScreenUiState()
-    data object Success : ViewerScreenUiState()
 }

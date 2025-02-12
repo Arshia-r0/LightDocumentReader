@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.arshia.lightdocumentreader.feature.main.navigation.mainScreenNavigation
-import com.arshia.lightdocumentreader.feature.viewer.navigation.deepLinkViewerScreenNavigation
-import com.arshia.lightdocumentreader.feature.viewer.navigation.viewerScreenNavigation
+import com.arshia.lightdocumentreader.ui.main.navigation.mainScreenNavigation
+import com.arshia.lightdocumentreader.ui.viewer.navigation.deepLinkViewerScreenNavigation
+import com.arshia.lightdocumentreader.ui.viewer.navigation.viewerScreenNavigation
 
 @Composable
 fun LDRNavHost(

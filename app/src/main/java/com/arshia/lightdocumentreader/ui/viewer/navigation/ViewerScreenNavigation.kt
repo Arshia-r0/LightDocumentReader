@@ -1,4 +1,4 @@
-package com.arshia.lightdocumentreader.feature.viewer.navigation
+package com.arshia.lightdocumentreader.ui.viewer.navigation
 
 import android.content.Intent
 import android.util.Log
@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.arshia.lightdocumentreader.app.navigation.LDRRoutes
-import com.arshia.lightdocumentreader.feature.viewer.ViewerScreen
+import com.arshia.lightdocumentreader.ui.viewer.ViewerScreen
 
 fun NavGraphBuilder.viewerScreenNavigation(
     navigateBack: () -> Unit,

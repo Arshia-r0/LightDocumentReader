@@ -1,4 +1,4 @@
-package com.arshia.lightdocumentreader.feature.main
+package com.arshia.lightdocumentreader.ui.main
 
 import androidx.lifecycle.ViewModel
 
