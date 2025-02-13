@@ -17,6 +17,7 @@ class ViewerScreenViewModel(
 
     val loading = mutableStateOf(true)
     val renderedPages = mutableStateOf<List<Bitmap>>(emptyList())
+    val isTopBarVisible = mutableStateOf(true)
 
     val scale = mutableFloatStateOf(1f)
     val offset = mutableStateOf(Offset.Zero)

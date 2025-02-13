@@ -7,25 +7,29 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
+import com.arshia.lightdocumentreader.ui.viewer.components.LoadingDocument
 import com.arshia.lightdocumentreader.ui.viewer.components.PdfPage
+import com.arshia.lightdocumentreader.ui.viewer.components.ViewerTopBar
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ViewerScreen(
     uri: Uri,
@@ -41,36 +45,46 @@ fun ViewerScreen(
         scale = (scale * zoom).coerceIn(zoomRange)
         offset += pan
     }
-   
-    if (loading) LoadingDocument()
-    else {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTransformGestures { centroid, pan, zoom, _ ->
-                        scale = (scale * zoom).coerceIn(zoomRange)
-                        offset += pan
-                    }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    Scaffold(
+        topBar = {
+            ViewerTopBar(
+                navigateBack = navigateBack,
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .pointerInput(Unit) {
+                detectTransformGestures { centroid, pan, zoom, _ ->
+                    scale = (scale * zoom).coerceIn(zoomRange)
+                    offset += pan
                 }
-                .combinedClickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        // todo view toolbar
-                    },
-                    onDoubleClick = {
-                        if (scale != 1f) {
-                            scale = 1f
-                            offset = Offset.Zero
-                        } else scale = 3f
-                    }
-                )
-        ) {
+            }
+            .combinedClickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {
+                    scrollBehavior.state.heightOffset =
+                        if (scrollBehavior.state.heightOffset != 0f) 0f
+                        else -Float.MAX_VALUE
+                },
+                onDoubleClick = {
+                    if (scale != 1f) {
+                        scale = 1f
+                        offset = Offset.Zero
+                    } else scale = 3f
+                }
+            )
+    ) { ip ->
+        if (loading) LoadingDocument(ip)
+        else {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(ip)
                     .graphicsLayer {
                         scaleX = scale
                         scaleY = scale
@@ -84,15 +98,5 @@ fun ViewerScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun LoadingDocument() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator()
     }
 }
