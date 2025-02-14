@@ -1,7 +1,6 @@
 package com.arshia.lightdocumentreader.ui.viewer.navigation
 
 import android.content.Intent
-import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -40,7 +39,6 @@ fun NavGraphBuilder.deepLinkViewerScreenNavigation(
     ) { backstackEntry ->
         val uri =
             (backstackEntry.arguments?.get(NavController.KEY_DEEP_LINK_INTENT) as? Intent)?.data
-        Log.d("deeplinkScreenNav", uri.toString())
         uri?.let {
             ViewerScreen(
                 uri = uri,

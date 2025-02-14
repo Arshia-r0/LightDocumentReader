@@ -7,8 +7,6 @@ import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 
 class PDFBitmapConverter(
@@ -26,8 +24,8 @@ class PDFBitmapConverter(
                 ?.use { descriptor ->
                     with(PdfRenderer(descriptor)) {
                         renderer = this
-                        return@withContext (0 until pageCount).map { index ->
-                            async {
+                        return@withContext buildList {
+                            (0 until pageCount).map { index ->
                                 openPage(index).use { page ->
 
                                     val bitmap = Bitmap.createBitmap(
@@ -48,10 +46,10 @@ class PDFBitmapConverter(
                                         PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY,
                                     )
 
-                                    bitmap
+                                    add(bitmap)
                                 }
                             }
-                        }.awaitAll()
+                        }
                     }
                 }
 

@@ -17,7 +17,6 @@ class ViewerScreenViewModel(
 
     val loading = mutableStateOf(true)
     val renderedPages = mutableStateOf<List<Bitmap>>(emptyList())
-    val isTopBarVisible = mutableStateOf(true)
 
     val scale = mutableFloatStateOf(1f)
     val offset = mutableStateOf(Offset.Zero)
@@ -26,7 +25,7 @@ class ViewerScreenViewModel(
         renderPdf()
     }
 
-    fun renderPdf() {
+    private fun renderPdf() {
         viewModelScope.launch {
             renderedPages.value = pdfBitmapConverter.pdfToBitmaps(uri)
             loading.value = false

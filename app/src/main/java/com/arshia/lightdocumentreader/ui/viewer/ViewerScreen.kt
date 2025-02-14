@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -23,7 +24,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
-import com.arshia.lightdocumentreader.ui.viewer.components.LoadingDocument
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.IntSize
+import com.arshia.lightdocumentreader.core.designsystem.components.LDRLoadingIndicator
 import com.arshia.lightdocumentreader.ui.viewer.components.PdfPage
 import com.arshia.lightdocumentreader.ui.viewer.components.ViewerTopBar
 import org.koin.androidx.compose.koinViewModel
@@ -41,11 +44,12 @@ fun ViewerScreen(
     val renderedPages by viewModel.renderedPages
     var scale by viewModel.scale
     var offset by viewModel.offset
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    var lazyColumnSize by remember { mutableStateOf(IntSize.Zero) }
     val transformableState = rememberTransformableState { zoom, pan, _ ->
         scale = (scale * zoom).coerceIn(zoomRange)
-        offset += pan
+
     }
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
         topBar = {
@@ -60,7 +64,15 @@ fun ViewerScreen(
             .pointerInput(Unit) {
                 detectTransformGestures { centroid, pan, zoom, _ ->
                     scale = (scale * zoom).coerceIn(zoomRange)
-                    offset += pan
+
+                    val maxX = ((scale - 1) * lazyColumnSize.width / 2).coerceAtLeast(0f)
+                    val maxY = ((scale - 1) * lazyColumnSize.height / 2).coerceAtLeast(0f)
+
+                    val newOffset = offset + pan
+                    offset = Offset(
+                        x = newOffset.x.coerceIn(-maxX, maxX),
+                        y = newOffset.y.coerceIn(-maxY, maxY)
+                    )
                 }
             }
             .combinedClickable(
@@ -79,24 +91,25 @@ fun ViewerScreen(
                 }
             )
     ) { ip ->
-        if (loading) LoadingDocument(ip)
-        else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(ip)
-                    .graphicsLayer {
-                        scaleX = scale
-                        scaleY = scale
-                        translationX = offset.x
-                        translationY = offset.y
-                    }
-                    .transformable(transformableState),
-            ) {
-                items(renderedPages) { page ->
-                    PdfPage(page = page)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(ip)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                    translationX = offset.x
+                    translationY = offset.y
                 }
+                .transformable(transformableState)
+                .onGloballyPositioned {
+                    lazyColumnSize = it.size
+                },
+        ) {
+            items(renderedPages) { page ->
+                PdfPage(page = page)
             }
         }
     }
+    if (loading) LDRLoadingIndicator()
 }
